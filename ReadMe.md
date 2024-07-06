@@ -53,3 +53,4 @@ The app API was organised into two modules for easy maintainability
 
 #### Thing I would have love to add
 - Write more test cases
+- Web socket / server-sent for real-time notification
