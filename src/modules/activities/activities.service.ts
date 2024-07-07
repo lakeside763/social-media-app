@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import Post, { CreatePostType, IPost, IPostQuery } from "../../models/post"
 import Comment, { CreateCommentType } from "../../models/comment";
-import Like, { ILike } from "../../models/like";
+import Like, { CreateLikeType } from "../../models/like";
 import followersNotificationQueue from "../../queues/notification.queue";
 import Notification from "../../models/notification";
 
@@ -74,7 +74,7 @@ export class ActivititesService {
 
     // Create notification for the post owner
     await Notification.create({
-      user: `${post.author._id}`,
+      user: post.author._id,
       type: 'comment',
       referenceId: post._id,
       message: `${data.username} commented on your post`,
@@ -83,7 +83,7 @@ export class ActivititesService {
     return comment;
   }
 
-  async likePost(data: ILike) {
+  async likePost(data: CreateLikeType) {
     const post = await Post.findById(data.postId);
     if (!post) {
       throw { errorCode: 400, message: 'Invalid post id '}

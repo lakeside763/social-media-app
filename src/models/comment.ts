@@ -5,6 +5,8 @@ export interface IComment {
   content: string
   author: any
   post: any
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface CreateCommentType {
