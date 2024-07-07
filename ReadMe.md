@@ -47,6 +47,7 @@ The app API was organised into two modules for easy maintainability
 - Project structuring
 - Writing of Test cases
 - Schema Validation
+- Background job for processing notification
 - Using of cluster Module for managing concurrency
 - Using of logger
 - Error handling middlewares
