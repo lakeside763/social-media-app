@@ -8,7 +8,7 @@ import app, { logger } from "./app";
 import mongoose from "mongoose";
 import Redis from 'ioredis';
 import { redisConfig } from './config';
-import notificationQueue from './queues/notification.queue';
+import followersNotificationQueue from './queues/notification.queue';
 
 export const redisClient = new Redis(redisConfig)
 export const server = http.createServer(app);
@@ -26,7 +26,7 @@ export const connectToMongoDB = async () => {
 const shutdown = async (server: Server) => {
   logger.info(`Shutting down gracefully`);
   await mongoose.disconnect();
-  await notificationQueue.close();
+  await followersNotificationQueue.close();
   server.close();
   return process.exit();
 }

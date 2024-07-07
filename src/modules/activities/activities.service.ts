@@ -2,7 +2,7 @@ import mongoose, { Types } from "mongoose";
 import Post, { CreatePostType, IPost, IPostQuery } from "../../models/post"
 import Comment, { CreateCommentType } from "../../models/comment";
 import Like, { ILike } from "../../models/like";
-import notificationQueue from "../../queues/notification.queue";
+import followersNotificationQueue from "../../queues/notification.queue";
 import Notification from "../../models/notification";
 
 export class ActivititesService {
@@ -17,8 +17,8 @@ export class ActivititesService {
 
     await post.save();
 
-    // Add notification to the queue
-    notificationQueue.add({
+    // Send notification to the followers
+    followersNotificationQueue.add({
       postId: post._id,
       authorId: authorId,
       type: 'post',
@@ -64,29 +64,22 @@ export class ActivititesService {
       author: data.userId
     });
   
-    // Prepare the base notification data
-    const notificationData = {
+    // send notification to the followers
+    followersNotificationQueue.add({
       postId: post._id,
       authorId: post.author._id,
       type: 'comment',
-    };
-  
-    const notificationsData = [
-      {
-        ...notificationData,
-        message: `${data.username} commented on your post`,
-      },
-      {
-        ...notificationData,
-        message: `${data.username} commented on ${post.author.username}'s post`,
-      },
-    ];
-  
-    // Add notifications to the queue
-    notificationsData.forEach(notification => {
-      notificationQueue.add(notification);
-    });
-  
+      message: `${data.username} commented on ${post.author.username}'s post`,
+    })
+
+    // Create notification for the post owner
+    await Notification.create({
+      user: `${post.author._id}`,
+      type: 'comment',
+      referenceId: post._id,
+      message: `${data.username} commented on your post`,
+    })
+
     return comment;
   }
 

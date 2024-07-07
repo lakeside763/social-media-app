@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import User from "../models/user";
 import clientRequest from "./client";
 import { redisClient, server } from "../server";
-import notificationQueue from "../queues/notification.queue";
+import followersNotificationQueue from "../queues/notification.queue";
 
 describe('user test', () => {
 
@@ -38,7 +38,7 @@ describe('user test', () => {
   afterAll(async () => {
     await mongoose.disconnect();
     await redisClient.quit();
-    await notificationQueue.close();
+    await followersNotificationQueue.close();
     server.close()
     jest.clearAllMocks();
   }) 

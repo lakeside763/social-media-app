@@ -5,11 +5,11 @@ import { redisConfig } from '../config';
 import { redisClient } from "../server";
 import { logger } from "../app";
 
-const notificationQueue = new Queue('notificationQueue', {
+const followersNotificationQueue = new Queue('followersNotificationQueue', {
   redis: redisConfig
 });
 
-notificationQueue.process(async (job, done) => {
+followersNotificationQueue.process(async (job, done) => {
   const { postId, authorId, type, message } = job.data
 
   const cacheKey = `user-${authorId}-followers`;
@@ -38,4 +38,4 @@ notificationQueue.process(async (job, done) => {
   done();
 });
 
-export default notificationQueue;
+export default followersNotificationQueue;

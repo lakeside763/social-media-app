@@ -3,7 +3,7 @@
 ## Backend Tasks
 - By Moses Idowu
 ### Getting Started
-- Setup .env and env.test environment variable using env.local.sample.
+- Setup .env and env.test environment variable using env.sample.
 
 - To run the application locally
 
@@ -53,4 +53,4 @@ The app API was organised into two modules for easy maintainability
 
 #### Thing I would have love to add
 - Write more test cases
-- Web socket / server-sent for real-time notification
+- Web socket / Server Sent Event for real-time notification
