@@ -28,26 +28,6 @@ export class ActivititesService {
     return post
   }
 
-  async getPosts(userId: any, limit: number = 10, cursor?: string) {
-    let query: IPostQuery = { author: new Types.ObjectId(`${userId}`) }
-    if (cursor) {
-      query = {...query, _id: { $lt: new Types.ObjectId(`${cursor}`)}}
-    }
-
-    const posts = await Post.find({ author: userId })
-      .sort({ _id: -1 })
-      .limit(limit + 1)
-
-    let nextCursor = null;
-    const hasNextPage = posts.length > limit;
-    if (hasNextPage) {
-      posts.pop();
-      nextCursor = posts[posts.length - 1]._id.toString()
-    }
-    
-    return { posts, nextCursor };
-  }
-
   async createPostComment(data: CreateCommentType) {
     const post = await Post.findById(data.postId).populate("author", '_id username') as IPost;
     if (!post) {
